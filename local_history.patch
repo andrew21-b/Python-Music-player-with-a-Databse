@@ -1,0 +1,75 @@
+Index: GUI testing new window playlist sysytem.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- GUI testing new window playlist sysytem.py	(date 1585756259355)
++++ GUI testing new window playlist sysytem.py	(date 1585756259355)
+@@ -216,6 +216,7 @@
+         self.master.protocol("WM_DELETE_WINDOW", self.close_windwow)
+ 
+         self.playlist = []
++        self.songAdded = False
+ 
+         self.testBtn = Button(self.master,text="new", command=self.newWindow)
+         self.testBtn.grid()
+@@ -249,7 +250,7 @@
+                 self.statusbar["text"] = "Playing music"+"-"+os.path.basename(self.play_it)
+                 self.show_details(self.play_it)
+             except:
+-                messagebox.showerror("File not found", "ManyMusIc could not find the file name. Please try again")
++                messagebox.showerror("File not found", "ManyMusic could not find the file name. Please try again")
+ 
+     #stop music function
+     def stop_music(self):
+@@ -361,7 +362,19 @@
+         self.submitBtn = Button(self.master,text="Submit", command=self.new_playlist)
+         self.submitBtn.grid()
+ 
+-    def new_playlist(self):
++
++        self.playlistBox = Listbox(self.master)
++        self.playlistBox.grid()
++
++        self.playlistBoxList = []
++
++        self.addBtn = Button(self.master, text="+ Add", command=self.browse_song_for_playlist())
++        self.addBtn.grid()
++        #self.delBtn = Button(self.master, text="- Del", command=self.del_song)
++        #self.delBtn.grid()
++
++
++    def new_playlist2(self):
+         conn = sqlite3.connect("ManyMusicDB.db")
+         c = conn.cursor()
+         playlist_name = (self.playlist_nameStr.get())
+@@ -377,10 +390,25 @@
+         conn.commit()
+         conn.close()
+ 
+-    def new_playlist2(self):
+-        root.playListFileO = filedialog.asksaveasfilename(title="Give a name to your playlist",filetypes=(("Python File", ".py"), ("Text File", ".txt")),initialdir="/")
+-        output = open(root.playListFileO, 'wb')
+-        pickle.dump(root.playlist, output, -1)
++
++    global playlist
++    playlist = []
++    def new_playlist(self, playlist = []):
++        self.playListFileO = filedialog.asksaveasfilename(title="Give a name to your playlist",filetypes=(("Python File", ".py"), ("Text File", ".txt")),initialdir="/")
++        output = open(self.playListFileO, 'wb')
++        pickle.dump(playlist, output, -1)
++
++    def browse_song_for_playlist(self):
++        global filename
++        filename = filedialog.askopenfilename(initialdir="/", title="Select your song", filetypes=(("mp3 Music Files", "*.mp3"), ("m4a Music Files", "*.m4a")))
++        self.add_to_playlist_box(filename)
++        print("done")
++    def add_to_playlist_box(self,filename):
++        filename = os.path.basename(filename)
++        self.index = 0
++        self.playlistBox.insert(self.index, filename)
++        self.playlistBoxList.insert(self.index, filename)
++        self.index += 1
+ 
+ 
+ 

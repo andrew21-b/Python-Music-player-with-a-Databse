@@ -1,0 +1,53 @@
+CREATE TABLE users
+(
+  user_id INT NOT NULL,
+  useranme VARCHAR(20) NOT NULL,
+  password VARCHAR(20) NOT NULL,
+  PRIMARY KEY (user_id),
+  UNIQUE (useranme)
+);
+
+CREATE TABLE artist
+(
+  artist_id INT NOT NULL,
+  artist_name VARCHAR(255) NOT NULL,
+  PRIMARY KEY (artist_id)
+);
+
+CREATE TABLE playlist
+(
+  playlist_id INT NOT NULL,
+  playlist_name VARCHAR(255) NOT NULL,
+  user_id INT NOT NULL,
+  PRIMARY KEY (playlist_id),
+  FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+CREATE TABLE songs
+(
+  song_id INT NOT NULL,
+  song_title VARCHAR(255) NOT NULL,
+  genre VARCHAR(255) NOT NULL,
+  duration INT NOT NULL,
+  artist_id INT NOT NULL,
+  PRIMARY KEY (song_id),
+  FOREIGN KEY (artist_id) REFERENCES artist(artist_id)
+);
+
+CREATE TABLE favourites
+(
+  user_id INT NOT NULL,
+  song_id INT NOT NULL,
+  PRIMARY KEY (user_id, song_id),
+  FOREIGN KEY (user_id) REFERENCES users(user_id),
+  FOREIGN KEY (song_id) REFERENCES songs(song_id)
+);
+
+CREATE TABLE compound
+(
+  playlist_id INT NOT NULL,
+  song_id INT NOT NULL,
+  PRIMARY KEY (playlist_id, song_id),
+  FOREIGN KEY (playlist_id) REFERENCES playlist(playlist_id),
+  FOREIGN KEY (song_id) REFERENCES songs(song_id)
+);

@@ -1,0 +1,10 @@
+alist=[1]
+print(alist)
+alist.append(1)
+print(alist)
+sum(alist)
+print(alist)
+alist.clear()
+print(alist)
+alist=[1]
+print(alist)
