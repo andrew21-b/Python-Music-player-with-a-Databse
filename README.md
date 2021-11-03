@@ -6,4 +6,4 @@ The file that has all the code of the application and is the runnableand working
 
 The databse files are the ones that have the program extension .db .
 
-This was my first evry project so feel free to change it how you like and improve it. :)
+This was my first project so feel free to change it how you like and improve it. :)
