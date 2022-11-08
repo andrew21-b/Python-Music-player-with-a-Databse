@@ -1,16 +1,18 @@
-from tkinter import *# the modules needed to use the libaries
-import tkinter as tk
-from tkinter import messagebox
-from tkinter import filedialog
-import sqlite3
-import time
-from pygame import mixer
 import os
-import threading
 import pickle
-from mutagen.mp3 import  MP3
+import sqlite3
+import threading
+import time
+import tkinter as tk
+from tkinter import *  # the modules needed to use the libaries
+from tkinter import filedialog
+from tkinter import messagebox
 from tkinter import ttk
+
+from mutagen.mp3 import MP3
+from pygame import mixer
 from ttkthemes import themed_tk as tk
+
 
 def main():  # this defines the program to make the windows
     root = tk.ThemedTk()
@@ -31,7 +33,6 @@ class loginWindow:  # this class holds the GUI for the login window
         loginFrame.configure(bg="#423f3e")
         loginFrame.pack(expand=True)
 
-
         # lines 17-18 convert the data to a string
         self.usernameStr = StringVar()
         self.passwordStr = StringVar()
@@ -42,7 +43,7 @@ class loginWindow:  # this class holds the GUI for the login window
         self.lblpassword = ttk.Label(loginFrame, text='Password', font=("Helvetica", 12))
         self.lblpassword.grid(row=1, column=0, ipady=5)
 
-         # Lines 20-24 put the entry box in the GUI
+        # Lines 20-24 put the entry box in the GUI
         self.inpUsername = ttk.Entry(loginFrame, textvariable=self.usernameStr, width=30)
         self.inpUsername.grid(row=0, column=1, ipady=5, padx=5)
         self.inpPassword = ttk.Entry(loginFrame, textvariable=self.passwordStr, width=30, show="*")
@@ -55,7 +56,6 @@ class loginWindow:  # this class holds the GUI for the login window
         self.btnRegister.grid(row=3, column=1, pady=5, padx=10)
 
         self.master.bind('<Return>', self.login)
-
 
     # this function opens the register window
     def newWindow(self):
@@ -92,7 +92,6 @@ class loginWindow:  # this class holds the GUI for the login window
                 messagebox.showerror("Login Error", "Used up all attempts program will terminate")
                 time.sleep(1)
                 self.master.destroy()
-
 
 
 class registerWindow:  # this class holds the GUI for the register window
@@ -176,12 +175,10 @@ class mainWindow():  # this class holds the GUI for the main application
         rboxFrame.pack(side=LEFT)
         bottomFrame.pack(side=BOTTOM, fill=X)
 
-
         middleFrame.configure(bg="#423f3e")
         topFrame.configure(bg="#423f3e")
         bottomFrame.configure(bg="#423f3e")
         rboxFrame.configure(bg="#423f3e")
-
 
         # menubar
         self.menubar = Menu(self.master)
@@ -237,7 +234,7 @@ class mainWindow():  # this class holds the GUI for the main application
 
         self.recommendBox = Listbox(rboxFrame, width=40, height=20, relief=SUNKEN)
         self.recommendBox.grid(row=1, column=0, padx=10)
-        self.recommendBoxLabel = ttk.Label(rboxFrame, text="Recommended",  font=("Helvetica", 9))
+        self.recommendBoxLabel = ttk.Label(rboxFrame, text="Recommended", font=("Helvetica", 9))
         self.recommendBoxLabel.grid(row=0)
 
         self.master.bind('<space>', self.pause_music)
@@ -311,7 +308,6 @@ class mainWindow():  # this class holds the GUI for the main application
             except:
                 print("Could not play the music")
 
-
     # stop music function
     def stop_music(self):
         mixer.music.stop()
@@ -365,7 +361,6 @@ class mainWindow():  # this class holds the GUI for the main application
             self.a = mixer.Sound(play_song)
             self.total_length = self.a.get_length()
 
-
         self.mins, self.secs = divmod(self.total_length, 60)
         self.mins = round(self.mins)
         self.secs = round(self.secs)
@@ -398,7 +393,7 @@ class mainWindow():  # this class holds the GUI for the main application
         try:
             self.songAdded = True
             self.filename = filedialog.askopenfilename(initialdir="/", title="Select your music track", filetypes=(
-            ("mp3 Music Files", "*.mp3"), ("m4a Music Files", "*.m4a")))
+                ("mp3 Music Files", "*.mp3"), ("m4a Music Files", "*.m4a")))
             self.playingsong = self.filename
             print(" Added " + self.filename)
         except:
@@ -407,8 +402,10 @@ class mainWindow():  # this class holds the GUI for the main application
     def browse_playlist_file(self):
         try:
             self.songAdded = True
-            self.filename = filedialog.askopenfilename(initialdir="/", title="Select your playlist", filetypes=(
-            ("mp3 Music Files", "*.mp3"), ("m4a Music Files", "*.m4a")))
+            self.filename = filedialog.askopenfilename(
+                initialdir="/C:/Users/andre/PycharmProjects/Python-Music-player-with-a-Databse/",
+                title="Select your playlist", filetypes=(
+                    ("Python File", ".py"), ("Text File", ".txt")))
             self.input = open(self.filename, 'rb')
             self.playlist = pickle.load(self.input)
             self.input.close()
@@ -430,8 +427,6 @@ class mainWindow():  # this class holds the GUI for the main application
                 print("Could not play the music")
         except:
             print("Cannot load the music")
-
-
 
     def next_music(self):
         if self.songAdded == False:
@@ -459,7 +454,6 @@ class mainWindow():  # this class holds the GUI for the main application
             except:
                 self.stop_music()
                 print("No previous song")
-
 
     def search_songid_sql(self):
         conn = sqlite3.connect("ManyMusicDB.db")
@@ -510,6 +504,7 @@ class mainWindow():  # this class holds the GUI for the main application
             self.index += 1
         conn.commit()
         conn.close()
+
     def close_windwow(self):
         self.stop_music()
         self.master.destroy()
@@ -584,7 +579,7 @@ class playlistWindow:
     def new_playlist(self):
         self.playListFileO = filedialog.asksaveasfilename(title="Re-enter the name for your new playlist",
                                                           filetypes=(("Python File", ".py"), ("Text File", ".txt")),
-                                                          initialdir="/")
+                                                          initialdir="C:/Users/andre/PycharmProjects/Python-Music-player-with-a-Databse/")
         output = open(self.playListFileO, 'wb')
         pickle.dump(self.playlist, output, -1)
         self.new_playlist2()
@@ -596,7 +591,6 @@ class playlistWindow:
                                                           initialdir="/")
         output = open(self.playListFileO, 'wb')
         pickle.dump(self.playlist, output, -1)
-
 
     def browse_song_for_playlist(self, ):
         global filename
@@ -684,7 +678,7 @@ class playlistWindow:
 
     def delete_playlist(self):
         filename = filedialog.askopenfilename(initialdir="/", title="Select the playlist you want to delete",
-                                              filetypes=(("mp3 Music Files", "*.mp3"), ("m4a Music Files", "*.m4a")))
+                                              filetypes=(("Python File", ".py"), ("Text File", ".txt")))
         os.remove(filename)
         conn = sqlite3.connect("ManyMusicDB.db")
         c = conn.cursor()
